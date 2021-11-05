@@ -26,7 +26,7 @@ public class MainApp {
             user.toString();
             System.out.println();
         }
-        System.out.println(userService.getUser("BMW", 101));
+        System.out.println(userService.getUserByCar("BMW", 101));
         context.close();
     }
 }

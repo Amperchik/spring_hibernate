@@ -2,11 +2,15 @@ package hiber.dao;
 
 import hiber.model.Car;
 import hiber.model.User;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -28,12 +32,20 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Car getCar(String model, int version) {
-        TypedQuery<Car> query = sessionFactory.getCurrentSession().createQuery("FROM Car car " +
-                "Left outer join fetch car.owner  WHERE car.model = :mod and car.series=:ver");
-        query.setParameter("mod", model).setParameter("ver", version);
-        return query.getSingleResult();
+    public List<User> getUserByCar(String model, int version) {
+        List<User> request=new ArrayList<>();
+        Session session= null;
+        try {
+            session=sessionFactory.getCurrentSession();
+            TypedQuery<User> query = session.createQuery("FROM User user " +
+                    "  WHERE car.model = :mod and car.series=:ver");
+            query.setParameter("mod", model).setParameter("ver", version);
+            request=query.getResultList();
+        } catch (Exception e) {
+            System.out.println("Fail");
+            e.printStackTrace();
+        }
+        return request;
 
     }
 

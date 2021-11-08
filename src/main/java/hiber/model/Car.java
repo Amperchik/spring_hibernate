@@ -8,8 +8,6 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    @OneToOne(mappedBy = "car")
-    private User owner;
     @Column
     private String model;
     @Column
@@ -29,14 +27,6 @@ public class Car {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 
     public String getModel() {
